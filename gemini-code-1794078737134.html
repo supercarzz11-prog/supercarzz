@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuperCarzz - Global Supercar Marketplace & Automotive Blog</title>
+    <meta name="description" content="Buy and sell elite supercars worldwide. Discover exotic vehicles, insurance guides, and expert automotive reviews on SuperCarzz.">
+    <meta name="keywords" content="supercars, luxury cars, buy supercars, sell supercars, Ferrari, Mercedes, car insurance, SuperCarzz">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Analytics (Replace G-XXXXXXXXXX with your Tracking ID) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <!-- Google AdSense (Replace ca-pub-XXXXXXXXXXXXXXXX with your AdSense Publisher ID) -->
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#0a0a0c',
+                            card: '#121216',
+                            border: '#2a2a35',
+                            red: '#ef4444',
+                            redhover: '#dc2626'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-brand-dark text-gray-100 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-red selection:text-white">
+
+    <!-- TOP BAR: Country, Currency, Language Switchers -->
+    <header class="bg-brand-card border-b border-brand-border sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center space-x-2 group">
+                <div class="bg-brand-red text-white p-2 rounded-xl group-hover:scale-105 transition transform shadow-lg shadow-brand-red/30">
+                    <i class="fa-solid fa-gauge-high text-xl"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-black tracking-wider uppercase text-white">Super<span class="text-brand-red">Carzz</span></span>
+                    <span class="block text-[10px] text-gray-400 tracking-widest uppercase">Global Marketplace</span>
+                </div>
+            </a>
+
+            <!-- Selectors Toolbar -->
+            <div class="flex items-center space-x-2 sm:space-x-4">
+                <!-- Country Selector -->
+                <div class="flex items-center bg-brand-dark border border-brand-border rounded-lg px-2 py-1 text-xs sm:text-sm">
+                    <i class="fa-solid fa-globe text-brand-red mr-2"></i>
+                    <select id="countrySelect" onchange="changeCountry(this.value)" class="bg-transparent text-gray-200 focus:outline-none cursor-pointer">
+                        <option value="JO">Jordan (JO)</option>
+                        <option value="AE">United Arab Emirates (UAE)</option>
+                        <option value="US">United States (US)</option>
+                        <option value="GB">United Kingdom (GB)</option>
+                        <option value="DE">Germany (DE)</option>
+                        <option value="SA">Saudi Arabia (SA)</option>
+                        <option value="QA">Qatar (QA)</option>
+                        <option value="ALL">🌐 All Countries</option>
+                    </select>
+                </div>
+
+                <!-- Currency Selector -->
+                <div class="hidden md:flex items-center bg-brand-dark border border-brand-border rounded-lg px-2 py-1 text-xs sm:text-sm">
+                    <select id="currencySelect" onchange="changeCurrency(this.value)" class="bg-transparent text-gray-200 focus:outline-none cursor-pointer">
+                        <option value="USD">USD ($)</option>
+                        <option value="EUR">EUR (€)</option>
+                        <option value="GBP">GBP (£)</option>
+                        <option value="AED">AED (د.إ)</option>
+                        <option value="JOD">JOD (JD)</option>
+                    </select>
+                </div>
+
+                <!-- Language Selector -->
+                <div class="flex items-center bg-brand-dark border border-brand-border rounded-lg px-2 py-1 text-xs sm:text-sm">
+                    <select id="langSelect" onchange="changeLanguage(this.value)" class="bg-transparent text-gray-200 focus:outline-none cursor-pointer">
+                        <option value="en">EN</option>
+                        <option value="ar">AR</option>
+                        <option value="es">ES</option>
+                    </select>
+                </div>
+
+                <!-- Upload Button -->
+                <button onclick="openUploadModal()" class="bg-brand-red hover:bg-brand-redhover text-white px-3 sm:px-4 py-2 rounded-lg font-bold text-xs sm:text-sm transition flex items-center space-x-2 shadow-lg shadow-brand-red/20">
+                    <i class="fa-solid fa-plus"></i>
+                    <span data-i18n="sellCar">Sell Your Car</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT LAYOUT (With Facebook Feed Sidebar) -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full grid grid-cols-1 lg:grid-cols-4 gap-8">
+        
+        <!-- LEFT / MAIN CONTENT: Filters, Cars Grid & SEO Blog (Takes 3 Columns on LG) -->
+        <div class="lg:col-span-3 space-y-8">
+            
+            <!-- Hero Banner -->
+            <div class="relative bg-gradient-to-r from-red-950/60 via-brand-card to-brand-card border border-brand-border rounded-2xl p-6 sm:p-8 overflow-hidden shadow-2xl">
+                <div class="absolute -right-10 -bottom-10 opacity-15 pointer-events-none">
+                    <i class="fa-solid fa-car-side text-[220px] text-brand-red"></i>
+                </div>
+                <div class="relative z-10 max-w-xl">
+                    <span class="bg-brand-red/20 text-brand-red text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider" data-i18n="badgeText">Verified Supercar Network</span>
+                    <h1 class="text-3xl sm:text-4xl font-black text-white mt-3" data-i18n="heroTitle">Buy & Sell Elite Supercars Worldwide</h1>
+                    <p class="text-gray-400 text-sm mt-2" data-i18n="heroSubtitle">Explore high-performance exotic vehicles, connect directly with owners, and list your supercar instantly.</p>
+                </div>
+            </div>
+
+            <!-- AdSense Banner Unit Placeholder -->
+            <div class="bg-brand-card border border-brand-border rounded-xl p-3 text-center overflow-hidden">
+                <span class="block text-[10px] text-gray-500 uppercase tracking-widest mb-1">Sponsored Ad</span>
+                <!-- Insert AdSense script here if approved -->
+                <div class="text-xs text-gray-500 py-3 border border-dashed border-brand-border rounded-lg">Google AdSense Banner Space</div>
+            </div>
+
+            <!-- Search & Filters Bar -->
+            <div class="bg-brand-card border border-brand-border rounded-xl p-4 flex flex-col md:flex-row gap-4 items-center justify-between">
+                <div class="relative w-full md:w-96">
+                    <i class="fa-solid fa-search absolute left-3 top-3.5 text-gray-500"></i>
+                    <input type="text" id="searchInput" oninput="filterCars()" placeholder="Search make, model, or year..." class="w-full bg-brand-dark border border-brand-border rounded-lg pl-10 pr-4 py-2.5 text-sm text-gray-200 focus:outline-none focus:border-brand-red">
+                </div>
+                <div class="flex items-center space-x-3 w-full md:w-auto">
+                    <select id="sortSelect" onchange="filterCars()" class="bg-brand-dark border border-brand-border rounded-lg px-3 py-2.5 text-sm text-gray-200 focus:outline-none w-full md:w-auto">
+                        <option value="newest">Sort: Newest First</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Cars Listing Grid -->
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-bold text-white flex items-center space-x-2">
+                        <i class="fa-solid fa-fire text-brand-red"></i>
+                        <span id="gridTitle">Supercars Available in Your Country</span>
+                    </h2>
+                    <span id="carCount" class="text-xs text-gray-400 bg-brand-card px-2.5 py-1 rounded-md border border-brand-border">0 cars found</span>
+                </div>
+
+                <div id="carsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Dynamic Car Cards injected via JavaScript -->
+                </div>
+            </div>
+
+            <!-- SEO AUTOMOTIVE BLOG SECTION -->
+            <section class="mt-12 pt-8 border-t border-brand-border">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-xl font-black text-white flex items-center space-x-2">
+                            <i class="fa-solid fa-newspaper text-brand-red"></i>
+                            <span>SuperCarzz Expert Journal</span>
+                        </h2>
+                        <p class="text-xs text-gray-400 mt-1">Exotic car reviews, insurance guides, and engineering spotlights.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Blog Post 1: Ferrari -->
+                    <article class="bg-brand-card border border-brand-border rounded-2xl overflow-hidden hover:border-brand-red/50 transition group flex flex-col">
+                        <div class="h-40 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=600&q=80" alt="Ferrari V8 Supercar" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 left-3 bg-brand-red text-white text-[10px] font-bold px-2.5 py-1 rounded-md">Supercar Spotlight</span>
+                        </div>
+                        <div class="p-5 flex flex-col flex-grow justify-between space-y-3">
+                            <div>
+                                <h3 class="font-bold text-white text-sm group-hover:text-brand-red transition">The Legacy of Ferrari V8 Masterpieces: From 458 to Speciale</h3>
+                                <p class="text-xs text-gray-400 mt-2 line-clamp-3">Dive deep into Maranello's naturally aspirated engineering marvels and why they remain holy grails for automotive collectors worldwide.</p>
+                            </div>
+                            <button onclick="openBlog(1)" class="text-xs font-bold text-brand-red hover:underline flex items-center gap-1 pt-2">
+                                Read Full Article <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </article>
+
+                    <!-- Blog Post 2: Car Insurance -->
+                    <article class="bg-brand-card border border-brand-border rounded-2xl overflow-hidden hover:border-brand-red/50 transition group flex flex-col">
+                        <div class="h-40 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80" alt="Exotic Car Insurance" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 left-3 bg-blue-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-md">Financial Guide</span>
+                        </div>
+                        <div class="p-5 flex flex-col flex-grow justify-between space-y-3">
+                            <div>
+                                <h3 class="font-bold text-white text-sm group-hover:text-brand-red transition">How to Insure Your Supercar: Coverage, Rates & Valuation Tips</h3>
+                                <p class="text-xs text-gray-400 mt-2 line-clamp-3">Insuring a high-end exotic car requires specialized agreed-value policies. Learn how to protect your investment without overpaying on premiums.</p>
+                            </div>
+                            <button onclick="openBlog(2)" class="text-xs font-bold text-brand-red hover:underline flex items-center gap-1 pt-2">
+                                Read Full Article <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </article>
+
+                    <!-- Blog Post 3: Mercedes -->
+                    <article class="bg-brand-card border border-brand-border rounded-2xl overflow-hidden hover:border-brand-red/50 transition group flex flex-col">
+                        <div class="h-40 overflow-hidden relative">
+                            <img src="https://images.unsplash.com/photo-1520031441872-265e4ff70366?auto=format&fit=crop&w=600&q=80" alt="Mercedes AMG G63" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 left-3 bg-brand-red text-white text-[10px] font-bold px-2.5 py-1 rounded-md">AMG Performance</span>
+                        </div>
+                        <div class="p-5 flex flex-col flex-grow justify-between space-y-3">
+                            <div>
+                                <h3 class="font-bold text-white text-sm group-hover:text-brand-red transition">Mercedes-AMG G63 & GT Series: Combining Luxury with Raw Power</h3>
+                                <p class="text-xs text-gray-400 mt-2 line-clamp-3">An analytical review of Affalterbach’s hand-built biturbo V8 engines and how they dominate both urban roads and alpine tracks.</p>
+                            </div>
+                            <button onclick="openBlog(3)" class="text-xs font-bold text-brand-red hover:underline flex items-center gap-1 pt-2">
+                                Read Full Article <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- RIGHT SIDEBAR: Facebook Page Updates & AdSense -->
+        <div class="lg:col-span-1 space-y-6">
+            <div class="bg-brand-card border border-brand-border rounded-2xl p-5 shadow-xl sticky top-24 space-y-6">
+                <!-- Facebook Card -->
+                <div>
+                    <div class="flex items-center justify-between pb-4 border-b border-brand-border">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-blue-600 text-white w-10 h-10 rounded-xl flex items-center justify-center text-lg shadow-md shadow-blue-600/30">
+                                <i class="fa-brands fa-facebook-f"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-white text-sm">SuperCarzz</h3>
+                                <span class="text-[11px] text-green-400 flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Community Live</span>
+                            </div>
+                        </div>
+                        <a href="https://facebook.com" target="_blank" class="text-xs bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white px-2.5 py-1.5 rounded-lg font-semibold transition">Follow</a>
+                    </div>
+
+                    <!-- Facebook Feed / Reels Section -->
+                    <div class="mt-4 space-y-4">
+                        <p class="text-xs text-gray-400 uppercase tracking-wider font-bold">Latest Reels & Updates</p>
+
+                        <!-- Feed Card 1 -->
+                        <div class="bg-brand-dark border border-brand-border rounded-xl p-3 hover:border-brand-red/50 transition group">
+                            <div class="relative rounded-lg overflow-hidden h-32 bg-gray-900 mb-2">
+                                <img src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=600&q=80" alt="Reel preview" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                    <div class="w-8 h-8 rounded-full bg-brand-red/90 text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition">
+                                        <i class="fa-solid fa-play ml-0.5 text-xs"></i>
+                                    </div>
+                                </div>
+                                <span class="absolute bottom-2 left-2 bg-black/70 text-[10px] px-2 py-0.5 rounded text-white font-mono">0:58 Reels</span>
+                            </div>
+                            <h4 class="text-xs font-bold text-gray-200 line-clamp-1">Porsche 911 GT3 RS Alpine Run 🏔️🔥</h4>
+                            <div class="mt-2 flex items-center justify-between text-[11px] text-gray-500 border-t border-brand-border pt-2">
+                                <span><i class="fa-solid fa-thumbs-up text-blue-500 mr-1"></i> 1.4K</span>
+                                <a href="https://facebook.com" target="_blank" class="text-blue-400 hover:underline">Watch on FB</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar AdSense Banner Unit -->
+                <div class="border-t border-brand-border pt-4 text-center">
+                    <span class="block text-[10px] text-gray-500 uppercase tracking-widest mb-2">Advertisement</span>
+                    <div class="bg-brand-dark border border-dashed border-brand-border rounded-xl p-6 text-xs text-gray-500">
+                        AdSense Sidebar Unit
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER WITH PRIVACY POLICY LINK -->
+    <footer class="bg-brand-card border-t border-brand-border py-6 mt-12 text-center text-xs text-gray-500 space-y-2">
+        <p>&copy; 2026 SuperCarzz. All rights reserved. Global Supercar Marketplace & Automotive Journal.</p>
+        <p>
+            <button onclick="openPrivacyModal()" class="text-gray-400 hover:text-brand-red transition underline font-semibold">Privacy Policy</button>
+        </p>
+    </footer>
+
+    <!-- MODAL: Sell / Upload Car -->
+    <div id="uploadModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-brand-card border border-brand-border rounded-2xl max-w-xl w-full p-6 sm:p-8 relative shadow-2xl my-8">
+            <button onclick="closeUploadModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h2 class="text-xl font-black text-white mb-6 flex items-center space-x-2">
+                <i class="fa-solid fa-car text-brand-red"></i>
+                <span data-i18n="modalTitle">List Your Supercar</span>
+            </h2>
+
+            <form id="carForm" onsubmit="handleCarSubmit(event)" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1" data-i18n="carTitle">Listing Title</label>
+                        <input type="text" id="carTitleInput" required placeholder="e.g., Porsche 911 GT3 RS" class="w-full bg-brand-dark border border-brand-border rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-brand-red">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1" data-i18n="carPrice">Price (USD)</label>
+                        <input type="number" id="carPriceInput" required placeholder="e.g., 225000" class="w-full bg-brand-dark border border-brand-border rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-brand-red">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1" data-i18n="carCountry">Country</label>
+                        <select id="carCountryInput" class="w-full bg-brand-dark border border-brand-border rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-brand-red">
+                            <option value="JO">Jordan</option>
+                            <option value="AE">United Arab Emirates</option>
+                            <option value="US">United States</option>
+                            <option value="GB">United Kingdom</option>
+                            <option value="DE">Germany</option>
+                            <option value="SA">Saudi Arabia</option>
+                            <option value="QA">Qatar</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1" data-i18n="carYear">Year</label>
+                        <input type="number" id="carYearInput" required placeholder="2024" class="w-full bg-brand-dark border border-brand-border rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-brand-red">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1" data-i18n="carMileage">Mileage (km)</label>
+                        <input type="text" id="carMileageInput" required placeholder="1,500 km" class="w-full bg-brand-dark border border-brand-border rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-brand-red">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1" data-i18n="carEngine">Engine / Specs</label>
+                        <input type="text" id="carSpecsInput" required placeholder="4.0L Flat-6, 518 HP" class="w-full bg-brand-dark border border-brand-border rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-brand-red">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 mb-1" data-i18n="sellerContact">Contact / Phone</label>
+                        <input type="text" id="carContactInput" required placeholder="+962 7XXXXXXXX" class="w-full bg-brand-dark border border-brand-border rounded-lg px-3 py-2 text-sm text-gray-200 focus:outline-none focus:border-brand-red">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 mb-1" data-i18n="carImageDevice">Upload Car Photo (from device)</label>
+                    <input type="file" id="carImageFile" accept="image/*" required class="w-full bg-brand-dark border border-brand-border rounded-lg px-3 py-2 text-sm text-gray-400 file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-brand-red file:text-white hover:file:bg-brand-redhover cursor-pointer">
+                </div>
+
+                <button type="submit" class="w-full py-3 bg-brand-red hover:bg-brand-redhover text-white font-bold rounded-xl transition shadow-lg shadow-brand-red/30 mt-4" data-i18n="publishBtn">
+                    Publish Supercar Listing
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: Car Details View -->
+    <div id="detailsModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-brand-card border border-brand-border rounded-2xl max-w-2xl w-full p-6 sm:p-8 relative shadow-2xl my-8">
+            <button onclick="closeDetailsModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="detailsContent">
+                <!-- Injected dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Blog Reading View -->
+    <div id="blogModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-brand-card border border-brand-border rounded-2xl max-w-3xl w-full p-6 sm:p-8 relative shadow-2xl my-8 max-h-[85vh] overflow-y-auto">
+            <button onclick="closeBlogModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="blogContent" class="space-y-4 text-gray-300 leading-relaxed text-sm">
+                <!-- Injected dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: Privacy Policy (AdSense Compliant) -->
+    <div id="privacyModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-brand-card border border-brand-border rounded-2xl max-w-3xl w-full p-6 sm:p-8 relative shadow-2xl my-8 max-h-[85vh] overflow-y-auto">
+            <button onclick="closePrivacyModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h2 class="text-2xl font-black text-white mb-4 flex items-center space-x-2">
+                <i class="fa-solid fa-shield-halved text-brand-red"></i>
+                <span>Privacy Policy for SuperCarzz</span>
+            </h2>
+            <div class="space-y-4 text-xs sm:text-sm text-gray-300 leading-relaxed">
+                <p>Last updated: November 2026</p>
+                <p>At <strong>SuperCarzz</strong>, accessible from our website, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by SuperCarzz and how we use it.</p>
+                
+                <h3 class="text-white font-bold text-base mt-4">1. Information We Collect</h3>
+                <p>When you use SuperCarzz, we may collect information you voluntarily provide when submitting car listings (such as car specifications, photos, and contact numbers). We also utilize automatic IP geolocation to match users with regional car listings upon their first visit.</p>
+
+                <h3 class="text-white font-bold text-base mt-4">2. Google AdSense & Cookies</h3>
+                <p>Google, as a third-party vendor, uses cookies to serve ads on SuperCarzz. Google's use of advertising cookies enables it and its partners to serve ads to our users based on their visit to our sites and/or other sites on the Internet.</p>
+                <p>Users may opt out of personalized advertising by visiting Ads Settings (<a href="https://www.google.com/settings/ads" target="_blank" class="text-brand-red underline">https://www.google.com/settings/ads</a>).</p>
+
+                <h3 class="text-white font-bold text-base mt-4">3. Log Files</h3>
+                <p>SuperCarzz follows a standard procedure of using log files. These files log visitors when they visit websites. The information collected by log files include internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks.</p>
+
+                <h3 class="text-white font-bold text-base mt-4">4. Consent</h3>
+                <p>By using our website, you hereby consent to our Privacy Policy and agree to its terms.</p>
+
+                <div class="pt-4 border-t border-brand-border text-right">
+                    <button onclick="closePrivacyModal()" class="px-5 py-2 bg-brand-red text-white rounded-xl font-bold text-xs hover:bg-brand-redhover transition">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- APPLICATION LOGIC & JAVASCRIPT -->
+    <script>
+        // Initial Mock Database
+        let cars = JSON.parse(localStorage.getItem('supercarzz_listings')) || [
+            {
+                id: 1,
+                title: "2023 Porsche 911 GT3 RS",
+                priceUSD: 285000,
+                country: "JO",
+                year: 2023,
+                mileage: "1,200 km",
+                specs: "4.0L Flat-6, 518 HP, PDK",
+                contact: "+962 7 9000 0000",
+                image: "https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=800&q=80",
+                date: Date.now()
+            },
+            {
+                id: 2,
+                title: "2022 Lamborghini Aventador SVJ",
+                priceUSD: 550000,
+                country: "AE",
+                year: 2022,
+                mileage: "3,400 km",
+                specs: "6.5L V12, 770 HP, AWD",
+                contact: "+971 50 123 4567",
+                image: "https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=800&q=80",
+                date: Date.now() - 10000
+            },
+            {
+                id: 3,
+                title: "2024 Ferrari 458 Speciale",
+                priceUSD: 340000,
+                country: "US",
+                year: 2021,
+                mileage: "5,100 km",
+                specs: "4.5L V8, 597 HP",
+                contact: "+1 (555) 382-9911",
+                image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80",
+                date: Date.now() - 20000
+            },
+            {
+                id: 4,
+                title: "2023 Mercedes-AMG G63 Edition",
+                priceUSD: 245000,
+                country: "SA",
+                year: 2023,
+                mileage: "4,000 km",
+                specs: "4.0L V8 Biturbo, 577 HP",
+                contact: "+966 50 999 8888",
+                image: "https://images.unsplash.com/photo-1520031441872-265e4ff70366?auto=format&fit=crop&w=800&q=80",
+                date: Date.now() - 30000
+            }
+        ];
+
+        let currentCountry = "JO";
+        let currentCurrency = "USD";
+        let currentLang = "en";
+
+        const currencyRates = {
+            USD: { rate: 1, symbol: "$" },
+            EUR: { rate: 0.92, symbol: "€" },
+            GBP: { rate: 0.79, symbol: "£" },
+            AED: { rate: 3.67, symbol: "د.إ" },
+            JOD: { rate: 0.71, symbol: "JD" }
+        };
+
+        const translations = {
+            en: {
+                sellCar: "Sell Your Car",
+                badgeText: "Verified Supercar Network",
+                heroTitle: "Buy & Sell Elite Supercars Worldwide",
+                heroSubtitle: "Explore high-performance exotic vehicles, connect directly with owners, and list your supercar instantly.",
+                gridTitle: "Supercars Available",
+                modalTitle: "List Your Supercar",
+                carTitle: "Listing Title",
+                carPrice: "Price (USD)",
+                carCountry: "Country",
+                carYear: "Year",
+                carMileage: "Mileage",
+                carEngine: "Engine / Specs",
+                sellerContact: "Contact / Phone",
+                carImageDevice: "Upload Car Photo (from device)",
+                publishBtn: "Publish Supercar Listing"
+            },
+            ar: {
+                sellCar: "اعرض سيارتك",
+                badgeText: "شبكة السيارات الخارقة الموثوقة",
+                heroTitle: "بيع وشراء السيارات الخارقة حول العالم",
+                heroSubtitle: "استكشف أندر السيارات الرياضية وتواصل مباشرة مع المالكين واعرض سيارتك فوراً.",
+                gridTitle: "السيارات الخارقة المتاحة",
+                modalTitle: "أضف سيارتك الخارقة",
+                carTitle: "عنوان الإعلان",
+                carPrice: "السعر (دولار أمريكي)",
+                carCountry: "الدولة",
+                carYear: "سنة الصنع",
+                carMileage: "الممشى",
+                carEngine: "المحرك / المواصفات",
+                sellerContact: "رقم التواصل",
+                carImageDevice: "رفع صورة السيارة من الجهاز",
+                publishBtn: "نشر إعلان السيارة"
+            },
+            es: {
+                sellCar: "Vende tu Auto",
+                badgeText: "Red Verificada de Superautos",
+                heroTitle: "Compra y Vende Superautos a Nivel Mundial",
+                heroSubtitle: "Explora vehículos exóticos de alto rendimiento y publica tu auto al instante.",
+                gridTitle: "Superautos Disponibles",
+                modalTitle: "Publica tu Superauto",
+                carTitle: "Título del Anuncio",
+                carPrice: "Precio (USD)",
+                carCountry: "País",
+                carYear: "Año",
+                carMileage: "Kilometraje",
+                carEngine: "Motor / Especificaciones",
+                sellerContact: "Contacto / Teléfono",
+                carImageDevice: "Subir Foto del Dispositivo",
+                publishBtn: "Publicar Anuncio"
+            }
+        };
+
+        const blogArticles = {
+            1: {
+                title: "The Legacy of Ferrari V8 Masterpieces: From 458 to Speciale",
+                image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80",
+                content: `
+                    <img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80" class="w-full h-64 object-cover rounded-xl mb-4" />
+                    <h2 class="text-xl font-black text-white">The Legacy of Ferrari V8 Masterpieces: From 458 to Speciale</h2>
+                    <p>Maranello's naturally aspirated mid-engine V8 cars have always represented the pinnacle of driver engagement. Long before turbocharging became the industry standard for efficiency, Ferrari perfected the art of high-revving power delivery.</p>
+                    <h3 class="text-white font-bold text-base mt-3">Why the 458 Era Remains Legendary</h3>
+                    <p>The Ferrari 458 Italia and its razor-sharp track variant, the 458 Speciale, marked the absolute swan song of naturally aspirated V8s from the Prancing Horse. Screaming past 9,000 RPM, the acoustic signature and throttle response are unmatched by modern forced-induction counterparts.</p>
+                    <p>Collectors and enthusiasts continue to value these models on marketplaces like SuperCarzz because they offer mechanical purity, timeless Pininfarina-inspired styling, and an unmistakable driving dynamic.</p>
+                `
+            },
+            2: {
+                title: "How to Insure Your Supercar: Coverage, Rates & Valuation Tips",
+                image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80",
+                content: `
+                    <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80" class="w-full h-64 object-cover rounded-xl mb-4" />
+                    <h2 class="text-xl font-black text-white">How to Insure Your Supercar: Coverage, Rates & Valuation Tips</h2>
+                    <p>Owning a high-performance supercar is a dream come true, but securing the right insurance policy can be complex. Standard auto insurance policies often fail to account for the true market appreciation and specialized repair costs associated with exotic brands like Lamborghini, Porsche, and Ferrari.</p>
+                    <h3 class="text-white font-bold text-base mt-3">Agreed Value vs. Actual Cash Value</h3>
+                    <p>When shopping for exotic car insurance, always insist on an <strong>Agreed Value</strong> policy. Unlike standard policies that factor in depreciation, an agreed value contract locks in a predetermined payout amount in the event of a total loss, protecting your investment.</p>
+                    <p>Additionally, storing your vehicle in a secure, climate-controlled garage and maintaining a clean driving record significantly reduces annual premiums.</p>
+                `
+            },
+            3: {
+                title: "Mercedes-AMG G63 & GT Series: Combining Luxury with Raw Power",
+                image: "https://images.unsplash.com/photo-1520031441872-265e4ff70366?auto=format&fit=crop&w=800&q=80",
+                content: `
+                    <img src="https://images.unsplash.com/photo-1520031441872-265e4ff70366?auto=format&fit=crop&w=800&q=80" class="w-full h-64 object-cover rounded-xl mb-4" />
+                    <h2 class="text-xl font-black text-white">Mercedes-AMG G63 & GT Series: Combining Luxury with Raw Power</h2>
+Affalterbach’s hand-built engines have carved out a legendary reputation for blending uncompromising luxury with brute-force performance. Whether conquering rugged dunes in a Mercedes-AMG G63 or hitting apexes in an AMG GT sports car, Mercedes engineering delivers unmatched versatility.</p>
+                    <h3 class="text-white font-bold text-base mt-3">The Biturbo V8 Phenomenon</h3>
+                    <p>The 4.0-liter biturbo V8 found across the AMG lineup provides relentless torque across the entire rev range. Paired with luxurious hand-stitched interiors and state-of-the-art infotainment, these vehicles remain among the most highly traded luxury assets on the global secondary market.</p>
+                `
+            }
+        };
+
+        // Initialize application on load
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const res = await fetch('https://ipapi.co/json/');
+                const data = await res.json();
+                if (data && data.country_code) {
+                    const countrySelect = document.getElementById('countrySelect');
+                    let exists = Array.from(countrySelect.options).some(opt => opt.value === data.country_code);
+                    if (exists) {
+                        currentCountry = data.country_code;
+                        countrySelect.value = currentCountry;
+                    }
+                }
+            } catch (e) {
+                console.log('Geolocation defaulted to Jordan (JO)');
+            }
+
+            filterCars();
+        });
+
+        function changeCountry(val) {
+            currentCountry = val;
+            filterCars();
+        }
+
+        function changeCurrency(val) {
+            currentCurrency = val;
+            filterCars();
+        }
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) el.innerText = t[key];
+            });
+
+            if (lang === 'ar') {
+                document.documentElement.setAttribute('dir', 'rtl');
+            } else {
+                document.documentElement.setAttribute('dir', 'ltr');
+            }
+        }
+
+        function formatPrice(usdPrice) {
+            const curr = currencyRates[currentCurrency];
+            const converted = Math.round(usdPrice * curr.rate);
+            return `${curr.symbol} ${converted.toLocaleString()}`;
+        }
+
+        function filterCars() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const sortVal = document.getElementById('sortSelect').value;
+
+            let filtered = cars.filter(car => {
+                const matchesCountry = (currentCountry === 'ALL' || car.country === currentCountry);
+                const matchesQuery = car.title.toLowerCase().includes(query) || car.specs.toLowerCase().includes(query);
+                return matchesCountry && matchesQuery;
+            });
+
+            if (sortVal === 'newest') {
+                filtered.sort((a, b) => b.date - a.date);
+            } else if (sortVal === 'price-low') {
+                filtered.sort((a, b) => a.priceUSD - b.priceUSD);
+            } else if (sortVal === 'price-high') {
+                filtered.sort((a, b) => b.priceUSD - a.priceUSD);
+            }
+
+            renderCars(filtered);
+        }
+
+        function renderCars(list) {
+            const grid = document.getElementById('carsGrid');
+            const countEl = document.getElementById('carCount');
+            const gridTitle = document.getElementById('gridTitle');
+
+            countEl.innerText = `${list.length} cars found`;
+            gridTitle.innerText = currentCountry === 'ALL' ? "All Global Supercars" : `Supercars Available in ${currentCountry}`;
+
+            if (list.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full bg-brand-card border border-brand-border rounded-2xl p-12 text-center text-gray-400">
+                        <i class="fa-solid fa-car-burst text-4xl mb-3 text-brand-red"></i>
+                        <p class="text-base font-bold text-white">No supercars found in this region yet.</p>
+                        <p class="text-xs mt-1">Be the first to list a supercar here using the "Sell Your Car" button!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = list.map(car => `
+                <div class="bg-brand-card border border-brand-border rounded-2xl overflow-hidden hover:border-brand-red/60 transition group flex flex-col shadow-xl">
+                    <div class="relative h-52 overflow-hidden bg-gray-900">
+                        <img src="${car.image}" alt="${car.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <div class="absolute top-3 left-3 bg-brand-dark/80 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs font-bold text-white border border-brand-border">
+                            <i class="fa-solid fa-tag text-brand-red mr-1"></i> ${car.country}
+                        </div>
+                        <div class="absolute bottom-3 right-3 bg-brand-red text-white font-black px-3 py-1 rounded-lg text-sm shadow-lg">
+                            ${formatPrice(car.priceUSD)}
+                        </div>
+                    </div>
+                    <div class="p-5 flex flex-col flex-grow justify-between space-y-4">
+                        <div>
+                            <h3 class="text-base font-bold text-white group-hover:text-brand-red transition">${car.title}</h3>
+                            <p class="text-xs text-gray-400 mt-1"><i class="fa-solid fa-gauge text-brand-red mr-1"></i> ${car.mileage} &bull; <i class="fa-solid fa-calendar text-brand-red ml-2 mr-1"></i> ${car.year}</p>
+                            <p class="text-xs text-gray-300 mt-2 bg-brand-dark p-2.5 rounded-xl border border-brand-border"><i class="fa-solid fa-gear text-brand-red mr-1"></i> ${car.specs}</p>
+                        </div>
+                        <div class="flex items-center justify-between pt-3 border-t border-brand-border">
+                            <span class="text-xs text-gray-400"><i class="fa-solid fa-phone text-brand-red mr-1"></i> ${car.contact}</span>
+                            <button onclick="openDetails(${car.id})" class="bg-brand-dark hover:bg-brand-red text-gray-200 hover:text-white px-3 py-1.5 rounded-lg text-xs font-bold transition border border-brand-border">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Modal Controls
+        function openUploadModal() {
+            document.getElementById('uploadModal').classList.remove('hidden');
+        }
+
+        function closeUploadModal() {
+            document.getElementById('uploadModal').classList.add('hidden');
+            document.getElementById('carForm').reset();
+        }
+
+        function handleCarSubmit(e) {
+            e.preventDefault();
+            const fileInput = document.getElementById('carImageFile');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    saveNewCar(event.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveNewCar(imageUrl) {
+            const newCar = {
+                id: Date.now(),
+                title: document.getElementById('carTitleInput').value,
+                priceUSD: parseFloat(document.getElementById('carPriceInput').value) || 0,
+                country: document.getElementById('carCountryInput').value,
+                year: parseInt(document.getElementById('carYearInput').value) || 2024,
+                mileage: document.getElementById('carMileageInput').value,
+                specs: document.getElementById('carSpecsInput').value,
+                contact: document.getElementById('carContactInput').value,
+                image: imageUrl,
+                date: Date.now()
+            };
+
+            cars.unshift(newCar);
+            localStorage.setItem('supercarzz_listings', JSON.stringify(cars));
+
+            closeUploadModal();
+            filterCars();
+            alert('Your supercar has been successfully listed!');
+        }
+
+        function openDetails(id) {
+            const car = cars.find(c => c.id === id);
+            if (!car) return;
+
+            const container = document.getElementById('detailsContent');
+            container.innerHTML = `
+                <div class="space-y-4">
+                    <div class="relative h-72 rounded-xl overflow-hidden bg-gray-900 border border-brand-border">
+                        <img src="${car.image}" alt="${car.title}" class="w-full h-full object-cover">
+                        <div class="absolute bottom-3 right-3 bg-brand-red text-white font-black px-4 py-2 rounded-xl text-lg shadow-xl">
+                            ${formatPrice(car.priceUSD)}
+                        </div>
+                    </div>
+                    <h2 class="text-2xl font-black text-white">${car.title}</h2>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-brand-dark p-3 rounded-xl border border-brand-border text-center text-xs">
+                        <div>
+                            <span class="block text-gray-400">Country</span>
+                            <span class="font-bold text-white">${car.country}</span>
+                        </div>
+                        <div>
+                            <span class="block text-gray-400">Year</span>
+                            <span class="font-bold text-white">${car.year}</span>
+                        </div>
+                        <div>
+                            <span class="block text-gray-400">Mileage</span>
+                            <span class="font-bold text-white">${car.mileage}</span>
+                        </div>
+                        <div>
+                            <span class="block text-gray-400">Specs</span>
+                            <span class="font-bold text-white">${car.specs}</span>
+                        </div>
+                    </div>
+                    <div class="bg-brand-dark p-4 rounded-xl border border-brand-border flex items-center justify-between">
+                        <div>
+                            <p class="text-xs text-gray-400">Seller Contact</p>
+                            <p class="text-base font-bold text-white">${car.contact}</p>
+                        </div>
+                        <a href="tel:${car.contact}" class="bg-brand-red hover:bg-brand-redhover text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-lg">
+                            <i class="fa-solid fa-phone mr-1"></i> Call Seller
+                        </a>
+                    </div>
+                </div>
+            `;
+            document.getElementById('detailsModal').classList.remove('hidden');
+        }
+
+        function closeDetailsModal() {
+            document.getElementById('detailsModal').classList.add('hidden');
+        }
+
+        function openBlog(id) {
+            const article = blogArticles[id];
+            if (!article) return;
+            document.getElementById('blogContent').innerHTML = article.content;
+            document.getElementById('blogModal').classList.remove('hidden');
+        }
+
+        function closeBlogModal() {
+            document.getElementById('blogModal').classList.add('hidden');
+        }
+
+        function openPrivacyModal() {
+            document.getElementById('privacyModal').classList.remove('hidden');
+        }
+
+        function closePrivacyModal() {
+            document.getElementById('privacyModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
